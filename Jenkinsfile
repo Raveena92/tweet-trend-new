@@ -1,10 +1,22 @@
 pipeline {
-    agent any
+    agent {
+        label 'maven'
+    }
 
     stages {
-        stage('Hello') {
+        stage('build') {
             steps {
-                git branch: 'main', url: 'https://github.com/Raveena92/tweet-trend-new.git'
+                mvn clean package
+            }
+        }
+    }
+
+    stages {
+        stage('SonarQube Analysis') {
+             steps {
+                withSonarQubeEnv('sonarqube-server') {
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
     }
