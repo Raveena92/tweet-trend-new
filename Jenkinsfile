@@ -3,14 +3,23 @@ pipeline {
         label 'maven'
     }
 
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+    }
+
     stages {
-        stage('Debug') {
+        stage('Build') {
             steps {
-                sh 'echo "Host: $(hostname)"'
-                sh 'echo "User: $(whoami)"'
-                sh 'echo "PATH: $PATH"'
-                sh 'which mvn || true'
-                sh 'mvn -version || true'
+                sh 'mvn -version'
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube-server') {
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
     }
