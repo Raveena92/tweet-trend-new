@@ -4,19 +4,12 @@ pipeline {
     }
 
     stages {
-        stage('build') {
+        stage('Debug') {
             steps {
-               sh 'mvn clean package'
+                sh 'echo "Host: $(hostname)"'
+                sh 'echo "User: $(whoami)"'
+                sh 'echo "PATH: $PATH"'
+                sh 'which mvn || true'
+                sh 'mvn -version || true'
             }
         }
-    
-
-        stage('SonarQube Analysis') {
-             steps {
-                withSonarQubeEnv('sonarqube-server') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
-    }
-}
