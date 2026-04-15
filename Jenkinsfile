@@ -9,7 +9,7 @@ pipeline {
                sh 'mvn clean package'
             }
         }
-    }
+    
 
         stage('SonarQube Analysis') {
              steps {
@@ -18,5 +18,5 @@ pipeline {
                 }
             }
         }
-    
+    }
 }
